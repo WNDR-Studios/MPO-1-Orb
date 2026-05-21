@@ -50,7 +50,7 @@ const float EMA_ALPHA = 0.2f;
 const int     SCREEN_WIDTH  = 128;
 const int     SCREEN_HEIGHT = 32;
 const int     OLED_RESET    = -1;     // no dedicated reset pin
-const uint8_t OLED_ADDRESS  = 0x3C;  // try 0x3D if display fails to init
+const uint8_t OLED_ADDRESS  = 0x3C;
 
 // ---------------------------------------------------------------------------
 // Loop timing
@@ -105,7 +105,7 @@ void setup() {
 // Returns the current capacitive ceiling based on pot position.
 long readCapMax() {
   int potVal = analogRead(POT_PIN);
-  return map(potVal, 0, 1023, CAP_MAX_LOW, CAP_MAX_HIGH);
+  return map(potVal, 0, 1023, CAP_MAX_HIGH, CAP_MAX_LOW);
 }
 
 // Renders three data lines to the 128x32 OLED.
