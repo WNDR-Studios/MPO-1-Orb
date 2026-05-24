@@ -34,15 +34,19 @@ const int MIDI_CHANNEL = 1;   // MIDI channel 1–16
 // Capacitive sensor tuning
 // ---------------------------------------------------------------------------
 const int  CAP_SAMPLES   = 30;   // readings averaged per measurement; raise for stability, lower for speed
-const long CAP_THRESHOLD = 50;   // raw values below this = no touch; raise if ambient noise is high
+const long CAP_THRESHOLD = 20000;   // raw values below this = no touch; raise if ambient noise is high
 
 // Pot maps to this range for the capacitive ceiling.
 // After first upload, do a calibration pass (see CLAUDE.md) and adjust these.
-const long CAP_MAX_LOW  = 500;    // cap ceiling when pot is fully counter-clockwise (hair trigger)
-const long CAP_MAX_HIGH = 15000;  // cap ceiling when pot is fully clockwise (requires firm touch)
+const long CAP_MAX_LOW  = 10000;    // cap ceiling when pot is fully counter-clockwise (hair trigger)
+const long CAP_MAX_HIGH = 4200000;   // cap ceiling when pot is fully clockwise (requires firm touch)
 
 // Exponential moving average smoothing factor (0–1); lower = smoother but slower to respond
-const float EMA_ALPHA = 0.2f;
+const float EMA_ALPHA = 0.5f;
+
+// MIDI curve exponent — controls how cap values map to MIDI.
+// 1.0 = linear; lower values (e.g. 0.3–0.5) spread proximity into more of the 0–127 range.
+const float CURVE_EXPONENT = 0.4f;
 
 // ---------------------------------------------------------------------------
 // OLED
@@ -160,11 +164,12 @@ void loop() {
   // Apply no-touch threshold — anything below this is treated as silence.
   long effective = (capSmoothed < CAP_THRESHOLD) ? 0 : capSmoothed;
 
-  // Map to MIDI 0–127.
+  // Map to MIDI 0–127 with a power curve so proximity spans more of the range.
   int midiVal = 0;
   if (effective > 0) {
-    midiVal = (int)map(effective, CAP_THRESHOLD, capMax, 0, 127);
-    midiVal = constrain(midiVal, 0, 127);
+    float normalized = (float)(effective - CAP_THRESHOLD) / (float)(capMax - CAP_THRESHOLD);
+    normalized = constrain(normalized, 0.0f, 1.0f);
+    midiVal = constrain((int)(pow(normalized, CURVE_EXPONENT) * 127.0f), 0, 127);
   }
 
   sendMidiIfChanged(midiVal);

@@ -79,9 +79,9 @@ All tunable values are constants at the top of the file:
 | `MIDI_CC_NUM` | 1 | MIDI CC number (1 = Mod Wheel) |
 | `MIDI_CHANNEL` | 1 | MIDI channel 1–16 |
 | `CAP_SAMPLES` | 30 | Samples per reading; raise for stability |
-| `CAP_THRESHOLD` | 50 | Below this raw value = no touch |
-| `CAP_MAX_LOW` | 500 | Cap ceiling when pot is fully CCW |
-| `CAP_MAX_HIGH` | 15000 | Cap ceiling when pot is fully CW |
+| `CAP_THRESHOLD` | 30000 | Below this raw value = no touch |
+| `CAP_MAX_LOW` | 200000 | Cap ceiling when pot is fully CCW |
+| `CAP_MAX_HIGH` | 4200000 | Cap ceiling when pot is fully CW |
 | `EMA_ALPHA` | 0.2 | Smoothing factor (lower = smoother) |
 | `LOOP_INTERVAL_MS` | 20 | Update rate (~50 Hz) |
 | `OLED_ADDRESS` | 0x3C | Try 0x3D if display fails to init |
