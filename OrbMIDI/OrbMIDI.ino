@@ -33,13 +33,13 @@ const int MIDI_CHANNEL = 1;   // MIDI channel 1–16
 // ---------------------------------------------------------------------------
 // Capacitive sensor tuning
 // ---------------------------------------------------------------------------
-const int  CAP_SAMPLES   = 30;   // readings averaged per measurement; raise for stability, lower for speed
-const long CAP_THRESHOLD = 20000;   // raw values below this = no touch; raise if ambient noise is high
+const int  CAP_SAMPLES   = 120;   // readings averaged per measurement; raise for stability, lower for speed
+const long CAP_THRESHOLD = 100000;   // raw values below this = no touch; raise if ambient noise is high
 
 // Pot maps to this range for the capacitive ceiling.
 // After first upload, do a calibration pass (see CLAUDE.md) and adjust these.
-const long CAP_MAX_LOW  = 10000;    // cap ceiling when pot is fully counter-clockwise (hair trigger)
-const long CAP_MAX_HIGH = 4200000;   // cap ceiling when pot is fully clockwise (requires firm touch)
+const long CAP_MAX_LOW  = 60000;    // cap ceiling when pot is fully counter-clockwise (hair trigger)
+const long CAP_MAX_HIGH = 4000000;   // cap ceiling when pot is fully clockwise (requires firm touch)
 
 // Exponential moving average smoothing factor (0–1); lower = smoother but slower to respond
 const float EMA_ALPHA = 0.5f;
